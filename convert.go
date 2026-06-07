@@ -257,3 +257,159 @@ func attachedVolumeFromPB(p *driverpb.AttachedVolume) drivers.AttachedVolume {
 	}
 	return drivers.AttachedVolume{BackingPath: p.BackingPath, ReadOnly: p.ReadOnly}
 }
+
+// ----- Snapshot -----
+
+func snapshotSpecToPB(s drivers.SnapshotSpec) *driverpb.SnapshotSpec {
+	return &driverpb.SnapshotSpec{
+		VolumeUuid: s.VolumeUUID,
+		Name:       s.Name,
+		Labels:     s.Labels,
+	}
+}
+
+func snapshotSpecFromPB(p *driverpb.SnapshotSpec) drivers.SnapshotSpec {
+	if p == nil {
+		return drivers.SnapshotSpec{}
+	}
+	return drivers.SnapshotSpec{
+		VolumeUUID: p.VolumeUuid,
+		Name:       p.Name,
+		Labels:     p.Labels,
+	}
+}
+
+func snapshotToPB(s drivers.Snapshot) *driverpb.Snapshot {
+	return &driverpb.Snapshot{
+		VolumeUuid:      s.VolumeUUID,
+		Name:            s.Name,
+		Parent:          s.Parent,
+		SizeBytes:       s.SizeBytes,
+		CreatedAtUnixNs: s.CreatedAtUnixNs,
+		Labels:          s.Labels,
+		UserCreated:     s.UserCreated,
+	}
+}
+
+func snapshotFromPB(p *driverpb.Snapshot) drivers.Snapshot {
+	if p == nil {
+		return drivers.Snapshot{}
+	}
+	return drivers.Snapshot{
+		VolumeUUID:      p.VolumeUuid,
+		Name:            p.Name,
+		Parent:          p.Parent,
+		SizeBytes:       p.SizeBytes,
+		CreatedAtUnixNs: p.CreatedAtUnixNs,
+		Labels:          p.Labels,
+		UserCreated:     p.UserCreated,
+	}
+}
+
+// ----- Backup -----
+
+func backupEncryptionToPB(e drivers.BackupEncryption) *driverpb.BackupEncryption {
+	if e.Algorithm == "" && e.PassphraseEnv == "" && e.KDF == "" && len(e.KDFParams) == 0 {
+		return nil
+	}
+	return &driverpb.BackupEncryption{
+		Algorithm:      e.Algorithm,
+		PassphraseEnv:  e.PassphraseEnv,
+		Kdf:            e.KDF,
+		KdfParams:      e.KDFParams,
+	}
+}
+
+func backupEncryptionFromPB(p *driverpb.BackupEncryption) drivers.BackupEncryption {
+	if p == nil {
+		return drivers.BackupEncryption{}
+	}
+	return drivers.BackupEncryption{
+		Algorithm:     p.Algorithm,
+		PassphraseEnv: p.PassphraseEnv,
+		KDF:           p.Kdf,
+		KDFParams:     p.KdfParams,
+	}
+}
+
+func backupEncryptionInfoToPB(e drivers.BackupEncryptionInfo) *driverpb.BackupEncryptionInfo {
+	if e.Algorithm == "" && e.KDF == "" && len(e.KDFParams) == 0 && e.SaltHex == "" {
+		return nil
+	}
+	return &driverpb.BackupEncryptionInfo{
+		Algorithm: e.Algorithm,
+		Kdf:       e.KDF,
+		KdfParams: e.KDFParams,
+		SaltHex:   e.SaltHex,
+	}
+}
+
+func backupEncryptionInfoFromPB(p *driverpb.BackupEncryptionInfo) drivers.BackupEncryptionInfo {
+	if p == nil {
+		return drivers.BackupEncryptionInfo{}
+	}
+	return drivers.BackupEncryptionInfo{
+		Algorithm: p.Algorithm,
+		KDF:       p.Kdf,
+		KDFParams: p.KdfParams,
+		SaltHex:   p.SaltHex,
+	}
+}
+
+func backupSpecToPB(s drivers.BackupSpec) *driverpb.BackupSpec {
+	return &driverpb.BackupSpec{
+		VolumeUuid:   s.VolumeUUID,
+		SnapshotName: s.SnapshotName,
+		Target:       s.Target,
+		Labels:       s.Labels,
+		ParentUrl:    s.ParentURL,
+		Encryption:   backupEncryptionToPB(s.Encryption),
+	}
+}
+
+func backupSpecFromPB(p *driverpb.BackupSpec) drivers.BackupSpec {
+	if p == nil {
+		return drivers.BackupSpec{}
+	}
+	return drivers.BackupSpec{
+		VolumeUUID:   p.VolumeUuid,
+		SnapshotName: p.SnapshotName,
+		Target:       p.Target,
+		Labels:       p.Labels,
+		ParentURL:    p.ParentUrl,
+		Encryption:   backupEncryptionFromPB(p.Encryption),
+	}
+}
+
+func backupToPB(b drivers.Backup) *driverpb.Backup {
+	return &driverpb.Backup{
+		VolumeUuid:      b.VolumeUUID,
+		SnapshotName:    b.SnapshotName,
+		Url:             b.URL,
+		ParentUrl:       b.ParentURL,
+		Encryption:      backupEncryptionInfoToPB(b.Encryption),
+		SizeBytes:       b.SizeBytes,
+		CreatedAtUnixNs: b.CreatedAtUnixNs,
+		Labels:          b.Labels,
+		State:           b.State,
+		Error:           b.Error,
+	}
+}
+
+func backupFromPB(p *driverpb.Backup) drivers.Backup {
+	if p == nil {
+		return drivers.Backup{}
+	}
+	return drivers.Backup{
+		VolumeUUID:      p.VolumeUuid,
+		SnapshotName:    p.SnapshotName,
+		URL:             p.Url,
+		ParentURL:       p.ParentUrl,
+		Encryption:      backupEncryptionInfoFromPB(p.Encryption),
+		SizeBytes:       p.SizeBytes,
+		CreatedAtUnixNs: p.CreatedAtUnixNs,
+		Labels:          p.Labels,
+		State:           p.State,
+		Error:           p.Error,
+	}
+}

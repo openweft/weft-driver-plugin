@@ -5,7 +5,7 @@ go 1.25.0
 require (
 	github.com/hashicorp/go-hclog v0.14.1
 	github.com/hashicorp/go-plugin v1.6.2
-	github.com/openweft/weft-drivers v0.1.0
+	github.com/openweft/weft-drivers v0.1.1-0.20260607160434-7dc01651bf55
 	google.golang.org/grpc v1.81.1
 	google.golang.org/protobuf v1.36.11
 )

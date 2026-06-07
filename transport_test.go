@@ -78,6 +78,22 @@ func (f *fakeDriver) AttachVolume(context.Context, string, string) (drivers.Atta
 	return drivers.AttachedVolume{BackingPath: "/x/disk.img", ReadOnly: true}, f.failWith
 }
 func (f *fakeDriver) DetachVolume(context.Context, string, string) error { return f.failWith }
+func (f *fakeDriver) CreateSnapshot(_ context.Context, spec drivers.SnapshotSpec) (drivers.Snapshot, error) {
+	return drivers.Snapshot{VolumeUUID: spec.VolumeUUID, Name: spec.Name, Labels: spec.Labels, UserCreated: true}, f.failWith
+}
+func (f *fakeDriver) ListSnapshots(context.Context, string) ([]drivers.Snapshot, error) {
+	return nil, f.failWith
+}
+func (f *fakeDriver) DeleteSnapshot(context.Context, string, string) error { return f.failWith }
+func (f *fakeDriver) RevertSnapshot(context.Context, string, string) error { return f.failWith }
+func (f *fakeDriver) CreateBackup(_ context.Context, spec drivers.BackupSpec) (drivers.Backup, error) {
+	return drivers.Backup{VolumeUUID: spec.VolumeUUID, SnapshotName: spec.SnapshotName, Labels: spec.Labels, State: "complete"}, f.failWith
+}
+func (f *fakeDriver) ListBackups(context.Context, string, string) ([]drivers.Backup, error) {
+	return nil, f.failWith
+}
+func (f *fakeDriver) DeleteBackup(context.Context, string) error                   { return f.failWith }
+func (f *fakeDriver) RestoreBackup(context.Context, string, drivers.VolumeSpec) error { return f.failWith }
 
 // ImageDriver
 func (f *fakeDriver) Pull(context.Context, string) error             { return f.failWith }
