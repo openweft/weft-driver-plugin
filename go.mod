@@ -5,7 +5,7 @@ go 1.25.0
 require (
 	github.com/hashicorp/go-hclog v0.14.1
 	github.com/hashicorp/go-plugin v1.6.2
-	github.com/openweft/weft-drivers v0.2.0
+	github.com/openweft/weft-drivers v0.3.0
 	google.golang.org/grpc v1.81.1
 	google.golang.org/protobuf v1.36.11
 )
@@ -24,4 +24,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-// Local-path replace removed in favour of the workspace-level go.work.
+replace github.com/openweft/weft-drivers => ../weft-drivers

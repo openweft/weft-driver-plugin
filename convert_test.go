@@ -55,7 +55,7 @@ func TestConvert_RoundTripPureFns(t *testing.T) {
 		{
 			name: "VMSpec",
 			eq: func(t *testing.T) {
-				v := drivers.VMSpec{UUID: "u", ProjectUUID: "p", Name: "n", CPUCount: 2, MemoryMiB: 1024, BootKind: "uki", BootRef: "r", Cmdline: "c"}
+				v := drivers.VMSpec{UUID: "u", ProjectUUID: "p", Name: "n", CPUCount: 2, MemoryMiB: 1024, BootKind: "uki", BootRef: "r", Cmdline: "c", VsockCID: 0x12345}
 				if got := vmSpecFromPB(vmSpecToPB(v)); got != v {
 					t.Errorf("VMSpec round-trip lost: got %+v want %+v", got, v)
 				}
