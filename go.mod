@@ -1,6 +1,6 @@
 module github.com/openweft/weft-driver-plugin
 
-go 1.25.0
+go 1.26.4
 
 require (
 	github.com/hashicorp/go-hclog v0.14.1
