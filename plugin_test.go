@@ -11,8 +11,8 @@ import (
 	"net"
 	"testing"
 
-	drivers "github.com/openweft/weft-drivers"
 	plugin "github.com/hashicorp/go-plugin"
+	drivers "github.com/openweft/weft-drivers"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/test/bufconn"
