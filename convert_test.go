@@ -11,8 +11,8 @@ import (
 	"errors"
 	"testing"
 
-	drivers "github.com/openweft/weft-drivers"
 	"github.com/openweft/weft-driver-plugin/driverpb"
+	drivers "github.com/openweft/weft-drivers"
 )
 
 func TestFromPB_NilInputsReturnZeroValues(t *testing.T) {

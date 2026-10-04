@@ -11,8 +11,8 @@ import (
 	"net"
 	"testing"
 
-	drivers "github.com/openweft/weft-drivers"
 	"github.com/openweft/weft-driver-plugin/driverpb"
+	drivers "github.com/openweft/weft-drivers"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/test/bufconn"
@@ -38,10 +38,13 @@ func (f *fakeDriver) HostInfo(context.Context) (drivers.HostInfo, error) {
 }
 
 // HypervisorDriver
-func (f *fakeDriver) CreateVM(_ context.Context, s drivers.VMSpec) error { f.lastVMSpec = s; return f.failWith }
-func (f *fakeDriver) StartVM(context.Context, string) error              { return f.failWith }
-func (f *fakeDriver) StopVM(context.Context, string) error               { return f.failWith }
-func (f *fakeDriver) DeleteVM(context.Context, string) error             { return f.failWith }
+func (f *fakeDriver) CreateVM(_ context.Context, s drivers.VMSpec) error {
+	f.lastVMSpec = s
+	return f.failWith
+}
+func (f *fakeDriver) StartVM(context.Context, string) error  { return f.failWith }
+func (f *fakeDriver) StopVM(context.Context, string) error   { return f.failWith }
+func (f *fakeDriver) DeleteVM(context.Context, string) error { return f.failWith }
 func (f *fakeDriver) AttachDisk(_ context.Context, _ string, d drivers.DiskSpec) error {
 	f.lastDisk = d
 	return f.failWith
@@ -63,7 +66,7 @@ func (f *fakeDriver) AttachPort(_ context.Context, s drivers.PortSpec) (drivers.
 	f.lastPortSpec = s
 	return f.attachReturn, f.failWith
 }
-func (f *fakeDriver) DetachPort(context.Context, string) error              { return f.failWith }
+func (f *fakeDriver) DetachPort(context.Context, string) error               { return f.failWith }
 func (f *fakeDriver) RotateMeshPeer(context.Context, drivers.PortSpec) error { return f.failWith }
 
 // VolumeDriver
@@ -92,14 +95,18 @@ func (f *fakeDriver) CreateBackup(_ context.Context, spec drivers.BackupSpec) (d
 func (f *fakeDriver) ListBackups(context.Context, string, string) ([]drivers.Backup, error) {
 	return nil, f.failWith
 }
-func (f *fakeDriver) DeleteBackup(context.Context, string) error                   { return f.failWith }
-func (f *fakeDriver) RestoreBackup(context.Context, string, drivers.VolumeSpec) error { return f.failWith }
+func (f *fakeDriver) DeleteBackup(context.Context, string) error { return f.failWith }
+func (f *fakeDriver) RestoreBackup(context.Context, string, drivers.VolumeSpec) error {
+	return f.failWith
+}
 
 // ImageDriver
-func (f *fakeDriver) Pull(context.Context, string) error             { return f.failWith }
-func (f *fakeDriver) LocalPath(context.Context, string) (string, error) { return "/cache/x", f.failWith }
-func (f *fakeDriver) Delete(context.Context, string) error           { return f.failWith }
-func (f *fakeDriver) InCache(context.Context, string) (bool, error)  { return true, f.failWith }
+func (f *fakeDriver) Pull(context.Context, string) error { return f.failWith }
+func (f *fakeDriver) LocalPath(context.Context, string) (string, error) {
+	return "/cache/x", f.failWith
+}
+func (f *fakeDriver) Delete(context.Context, string) error          { return f.failWith }
+func (f *fakeDriver) InCache(context.Context, string) (bool, error) { return true, f.failWith }
 
 // dialSet wires the four server adapters around fake onto a bufconn gRPC
 // server and returns a DriverSet of client stubs talking to it.
