@@ -24,6 +24,7 @@ type fakeDriver struct {
 	hostInfo drivers.HostInfo
 	failWith error
 
+	lastToken    []byte
 	lastVMSpec   drivers.VMSpec
 	lastDisk     drivers.DiskSpec
 	lastNIC      drivers.NICHandle
@@ -42,7 +43,11 @@ func (f *fakeDriver) CreateVM(_ context.Context, s drivers.VMSpec) error {
 	f.lastVMSpec = s
 	return f.failWith
 }
-func (f *fakeDriver) StartVM(context.Context, string) error  { return f.failWith }
+func (f *fakeDriver) StartVM(context.Context, string) error { return f.failWith }
+func (f *fakeDriver) StartVMWithBootToken(_ context.Context, _ string, token []byte) error {
+	f.lastToken = append([]byte(nil), token...)
+	return f.failWith
+}
 func (f *fakeDriver) StopVM(context.Context, string) error   { return f.failWith }
 func (f *fakeDriver) DeleteVM(context.Context, string) error { return f.failWith }
 func (f *fakeDriver) AttachDisk(_ context.Context, _ string, d drivers.DiskSpec) error {
