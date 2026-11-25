@@ -3,6 +3,7 @@ package driverpb
 import (
 	"context"
 	"errors"
+	"fmt"
 	"testing"
 
 	"google.golang.org/grpc"
@@ -21,6 +22,11 @@ func TestStartVMWithBootTokenRequestGetters(t *testing.T) {
 	}
 	if r.String() == "" || r.ProtoReflect() == nil {
 		t.Error("reflection broken")
+	}
+	// A live message takes the fast messageState path; the nil receiver
+	// takes the wrapper path. The two reflect to different concrete types.
+	if fmt.Sprintf("%T", r.ProtoReflect()) == fmt.Sprintf("%T", nilReq.ProtoReflect()) {
+		t.Error("live and nil messages must not share a reflection path")
 	}
 	if nilReq.ProtoReflect().IsValid() {
 		t.Error("nil message must reflect as invalid")
