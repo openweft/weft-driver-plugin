@@ -22,6 +22,9 @@ func TestStartVMWithBootTokenRequestGetters(t *testing.T) {
 	if r.String() == "" || r.ProtoReflect() == nil {
 		t.Error("reflection broken")
 	}
+	if nilReq.ProtoReflect().IsValid() {
+		t.Error("nil message must reflect as invalid")
+	}
 	r.Reset()
 	if r.GetVmUuid() != "" {
 		t.Error("Reset did not clear")
